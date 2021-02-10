@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>Music Player Electron</title>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div>
+            <h1>Music Player</h1>
+            <div>
+                <form id="file-upload">
+                    <input type="file" accept="audio/*" id="audio-file"></input>
+                    <button type="submit">Add to Playlist</button>
+                </form>
+            </div>
+            <!-- <div class="file-container" id="fileContainer"> -->
+                    
+            </div>
+            <div>
+                <button id="previous-btn">Previous</button>
+                <button id="play-btn">Play</button>
+                <button id="stop-btn">Stop</button>
+                <button id="next-btn">Next</button>
+            </div>
+            <div id="currently-playing-container">
+                Currently Playing: <span id="currently-playing"></span>
+                <audio id="song"></audio>
+            </div>
+
+            <div id="playlist-container">
+                <h3>Playlist</h3>
+                <ul id="playlist-items">
+
+                </ul>
+            </div>
+        </div>
+        <script src="musicControl.js"></script>
+        <script src="fileDirectory.js"></script>
+
+    </body>
+</html>

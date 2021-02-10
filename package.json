@@ -1,0 +1,11 @@
+{
+  "name": "music-player",
+  "version": "1.0.0",
+  "description": "A music player built in Electron.js",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Fabian Fabro",
+  "license": "ISC"
+}
