@@ -19,6 +19,8 @@ const next = document.getElementById("next-btn");
 const fileContainer = document.getElementById("fileContainer");
 const audioElement = document.querySelector("audio");
 
+const audioCanvas = document.getElementById("audio-spectrum");
+
 const playlist = [];
 
 let currentSong = new Audio();
@@ -27,12 +29,42 @@ let isPlaying = false;
 
 let audioContext = new AudioContext();
 let track;
+let analyser;
+
+// analyser.fftSize = 2048;
+// let bufferLength = analyser.frequencyBinCount;
+// let dataArray = new Uint8Array(bufferLength);
+// analyser.getByteTimeDomainData(dataArray);
+
+// const draw = () => {
+//     let drawVisual = requestAnimationFrame(draw);
+//     analyser.getByteTimeDomainData(dataArray);
+    
+//     audioCa
+// }
+
 // let buffer;
 
 // fileContainer.addEventListener("drag", (e) => {
 //     e.preventDefault();
 //     console.log(e);
 // })
+
+/*TODO Features
+=== Cursor on NOW PLAYING
+=== Time Length of NOW PLAYING
+=== SHUFFLE
+=== REPEAT
+=== AUDIO SPECTRUM/VISUALIZER OF SONG
+=== SCROLL AROUND AUDIO SPECTRUM
+
+=== Control Playback Speed
+=== Loop Certain Sections (*Start Section *End Section)
+===
+
+
+
+*/
 
 const resetPlaylist = () => {
     while(playlistItems.firstChild){
@@ -113,6 +145,10 @@ play.addEventListener('click', () => {
             } else {
                 audioElement.src = playlist[currentIndex].source;
                 track = audioContext.createMediaElementSource(audioElement);
+                analyser = audioContext.createAnalyser();
+                console.log(analyser);
+                track.connect(analyser);
+                analyser.connect(audioContext.destination);
                 playTrack();
             }
     }
@@ -130,10 +166,8 @@ next.addEventListener('click', () => {
     
     if(currentIndex === playlist.length) return;
     currentIndex++;
-    // changeSongSource(currentIndex);
     console.log(isPlaying);
     if(isPlaying){
-        // audioElement.src = playlist[currentIndex].source;
         changeSongSource(currentIndex);
     }
 

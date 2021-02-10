@@ -7,11 +7,16 @@
     </head>
     <body>
         <div>
-            <h1>Music Player</h1>         
+            <h1 class="title">Music Player</h1>         
             <div>
                 <div id="now-playing-container" class="now-playing-container">
                     <h2>Now Playing: <span id="now-playing" class="now-playing"></span></h2>
                     <audio id="song"></audio>
+                </div>
+                <div id="audio-spectrum-container">
+                    <canvas id="audio-spectrum">
+
+                    </canvas>
                 </div>
                 <div class="ui-controls">
                     <button id="previous-btn" class="ui-button">Previous</button>
