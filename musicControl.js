@@ -8,8 +8,8 @@ const fileUploadForm = document.getElementById("file-upload");
 const playlistContainer = document.getElementById("playlist-container");
 const playlistItems = document.getElementById("playlist-items");
 
-const currentlyPlayingContainer = document.getElementById("currently-playing-container");
-const currentPlayingSong = document.getElementById("currently-playing");
+const nowPlayingContainer = document.getElementById("now-playing-container");
+const nowPlayingSong = document.getElementById("now-playing");
 
 const previous = document.getElementById("previous-btn");
 const play = document.getElementById("play-btn");
@@ -45,8 +45,8 @@ const changeSongSource = (num) => {
 }
 
 const showCurrentSongPlaying = () => {
-    currentPlayingSong.textContent = playlist[currentIndex].name;
-    currentlyPlayingContainer.appendChild(currentPlayingSong);
+    nowPlayingSong.textContent = playlist[currentIndex].name;
+    nowPlayingContainer.appendChild(nowPlayingSong);
 }
 
 const playTrack = () => {

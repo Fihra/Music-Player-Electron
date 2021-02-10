@@ -1,9 +1,77 @@
 body {
-    background-color: rgb(79, 161, 255)
+    /* background-color: rgb(79, 161, 255); */
+    background: linear-gradient(to right, #1C6EA4 0%, #2388CB 56%, #144E75 100%);
+    
 }
 
-.file-container {
+h1 {
+    text-align: center;
+    color: rgb(205, 255, 230);
+}
+
+h2 {
+    color: rgb(205, 255, 230);
+}
+
+li, span{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color:rgb(120, 211, 46);
+    /* text-shadow: 1px 2px 2px #6AA405; */
+}
+
+/* .now-playing {
+    color:rgb(205, 255, 230);
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+} */
+
+.playlist-container h2 {
+    position: absolute;
+    display: inline-block;
+}
+
+.file-upload-container {
+    position: absolute;
+    left: 100px;
+    top: 195px;
+    margin: auto;
+    /* border: 5px solid black; */
+    text-align: center;
+}
+
+input[type="file"]{
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.now-playing-container {
+    text-align: center;
+    align-items: center;
+    width: auto;
+    padding-bottom: 10px;
+}
+.ui-controls {
+    text-align: center;
+    align-items: center;
+}
+
+.ui-button {
+    color: rgb(205, 255, 230);
+    font-weight: bold;
+    padding: 10px;
+    height: 50px;
     width: 100px;
-    height: 100px;
-    border: 5px solid black;
+    background-color: rgb(0, 117, 153);
+    box-shadow: 1px 1px 1px 1px black;
+}
+
+.ui-button:hover {
+    background-color:rgb(0, 151, 76);
 }
