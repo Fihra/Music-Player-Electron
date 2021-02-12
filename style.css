@@ -37,6 +37,14 @@ span {
     font-weight: bold;
 } */
 
+#audio-spectrum-container {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
 .playlist-container h2 {
     position: absolute;
     display: inline-block;

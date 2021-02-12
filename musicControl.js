@@ -20,6 +20,7 @@ const fileContainer = document.getElementById("fileContainer");
 const audioElement = document.querySelector("audio");
 
 const audioCanvas = document.getElementById("audio-spectrum");
+const canvasContext = audioCanvas.getContext('2d');
 
 const playlist = [];
 
@@ -30,6 +31,8 @@ let isPlaying = false;
 let audioContext = new AudioContext();
 let track;
 let analyser;
+let bufferLength;
+let dataArray;
 
 // analyser.fftSize = 2048;
 // let bufferLength = analyser.frequencyBinCount;
@@ -61,9 +64,6 @@ let analyser;
 === Control Playback Speed
 === Loop Certain Sections (*Start Section *End Section)
 ===
-
-
-
 */
 
 const resetPlaylist = () => {
@@ -111,6 +111,41 @@ const showPlaylist = () => {
         playlistItems.appendChild(songContainer);
     }
 }
+
+const draw = () => {
+    requestAnimationFrame(draw);
+
+    analyser.getByteTimeDomainData(dataArray);
+    console.log(dataArray);
+    canvasContext.fillStyle = "rgb(200, 200, 200)";
+    canvasContext.fillRect(0, 0, audioCanvas.width, audioCanvas.height);
+
+    canvasContext.lineWidth = 2;
+    canvasContext.strokeStyle = "rgb(0, 0, 0)";
+
+    canvasContext.beginPath();
+
+    let sliceWidth = audioCanvas.width * 1.0 / bufferLength;
+    let x = 0;
+
+    for(let i=0; i < bufferLength; i++){
+        let v = dataArray[i] / 128.0;
+        let y = v * audioCanvas.height /2;
+
+        if(i ===0){
+            canvasContext.moveTo(x, y);
+        } else {
+            canvasContext.lineTo(x, y);
+        }
+
+        x+= sliceWidth;
+    }
+
+    canvasContext.lineTo(audioCanvas.width, audioCanvas.height /2);
+    canvasContext.stroke();
+
+}
+
 fileUploadForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     const { name, path } = audioFile.files[0];
@@ -136,22 +171,44 @@ play.addEventListener('click', () => {
     console.log("play track")
     showCurrentSongPlaying();
 
+    let seconds = 0;
+
     if(isPlaying){
         audioElement.pause();
     } else {
         isPlaying = true; 
             if(audioElement.src) {
+                console.log(analyser);
+                draw();
                 playTrack();
             } else {
                 audioElement.src = playlist[currentIndex].source;
                 track = audioContext.createMediaElementSource(audioElement);
                 analyser = audioContext.createAnalyser();
-                console.log(analyser);
                 track.connect(analyser);
-                analyser.connect(audioContext.destination);
+                analyser.fftSize = 2048;
+                bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+                draw();
+                // console.log(analyser.getByteFrequencyData(dataArray));
                 playTrack();
             }
     }
+
+    // audioElement.addEventListener('timeupdate', (e) => {
+    //     console.log(`${seconds} second(s) has passed`);
+    //     seconds++;
+    // })
+
+    audioElement.ontimeupdate = (e) => {
+        let currentClock = new Date().getTime();
+        // console.log(Math.floor(currentClock/ 1000));
+        // console.log(audioElement.currentTime);
+        // console.log(audioElement.buffered)
+        // console.log(`${seconds} second(s) has passed`);
+        seconds++;        
+    }
+
 })
 
 stop.addEventListener('click', () => {
