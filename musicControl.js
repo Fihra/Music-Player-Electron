@@ -19,6 +19,9 @@ const next = document.getElementById("next-btn");
 const fileContainer = document.getElementById("fileContainer");
 const audioElement = document.querySelector("audio");
 
+const bufferedAmount = document.getElementById("buffered-amount");
+const progressAmount = document.getElementById("progress-amount");
+
 const audioCanvas = document.getElementById("audio-spectrum");
 const canvasContext = audioCanvas.getContext('2d');
 
@@ -34,24 +37,9 @@ let analyser;
 let bufferLength;
 let dataArray;
 
-// analyser.fftSize = 2048;
-// let bufferLength = analyser.frequencyBinCount;
-// let dataArray = new Uint8Array(bufferLength);
-// analyser.getByteTimeDomainData(dataArray);
+let samples = audioContext.sampleRate * 2.0;
 
-// const draw = () => {
-//     let drawVisual = requestAnimationFrame(draw);
-//     analyser.getByteTimeDomainData(dataArray);
-    
-//     audioCa
-// }
-
-// let buffer;
-
-// fileContainer.addEventListener("drag", (e) => {
-//     e.preventDefault();
-//     console.log(e);
-// })
+let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate);
 
 /*TODO Features
 === Cursor on NOW PLAYING
@@ -74,15 +62,45 @@ const resetPlaylist = () => {
 
 const changeSongSource = (num) => {
     audioElement.src = playlist[num].source;
+    track.connect(audioContext.destination);
+    showCurrentSongPlaying();
+    playTrack();
 }
 
 const showCurrentSongPlaying = () => {
     nowPlayingSong.textContent = playlist[currentIndex].name;
+    console.log(playlist);
     nowPlayingContainer.appendChild(nowPlayingSong);
 }
 
 const playTrack = () => {
+    analyser = audioContext.createAnalyser();
+    track.connect(analyser);
+    analyser.fftSize = 1024;
+    bufferLength = analyser.fftSize;
+    dataArray = new Float32Array(bufferLength);
+
+    let currentTrackTime;
+    console.log(track.context.currentTime);
+
+    audioElement.addEventListener("loadedmetadata", () => {
+        currentTrackTime = audioElement.duration;
+        console.log(currentTrackTime);
+    })
+
+    // audioElement.addEventListener('progress', () => {
+    //     if(currentTrackTime > 0){
+    //         for(let i = 0; i < audioElement.buffered.length; i++){
+    //             if(audioElement.buffered.start(audioElement.buffered.length - 1 - i) < audioElement.currentTime){
+
+    //             }
+    //         }
+    //     }
+    // })
+
     track.connect(audioContext.destination);
+
+    draw();
     audioElement.play();
 }
 
@@ -96,16 +114,11 @@ const showPlaylist = () => {
  
         songContainer.addEventListener("click" , () =>{
             console.log(songElement.textContent);
-            // currentIndex = i;
+            currentIndex = i;
             // audioElement.src = playlist[i].source;
             changeSongSource(i);
             
         })
-
-        // songElement.addEventListener("drag", (e) => {
-        //     e.preventDefault();
-        //     console.log(e);
-        // })
 
         songContainer.appendChild(songElement);
         playlistItems.appendChild(songContainer);
@@ -114,11 +127,12 @@ const showPlaylist = () => {
 
 const draw = () => {
     requestAnimationFrame(draw);
-
-    analyser.getByteTimeDomainData(dataArray);
-    console.log(dataArray);
-    canvasContext.fillStyle = "rgb(200, 200, 200)";
-    canvasContext.fillRect(0, 0, audioCanvas.width, audioCanvas.height);
+    // analyser.getFloatFrequencyData(dataArray);
+    analyser.getFloatTimeDomainData(dataArray);
+    // console.log(dataArray);
+    canvasContext.fillStyle = "rgba(0, 255, 255, 0.5)";
+    // canvasContext.fillRect(0, 0, audioCanvas.width, audioCanvas.height);
+    canvasContext.clearRect(0, 0, audioCanvas.width, audioCanvas.height)
 
     canvasContext.lineWidth = 2;
     canvasContext.strokeStyle = "rgb(0, 0, 0)";
@@ -129,8 +143,11 @@ const draw = () => {
     let x = 0;
 
     for(let i=0; i < bufferLength; i++){
-        let v = dataArray[i] / 128.0;
-        let y = v * audioCanvas.height /2;
+        // let v = dataArray[i] / 128.0;
+        // let y = v * audioCanvas.height /2;
+        let v = dataArray[i] * 200.0;
+        let y = (audioCanvas.height/2) + v;
+
 
         if(i ===0){
             canvasContext.moveTo(x, y);
@@ -148,11 +165,11 @@ const draw = () => {
 
 fileUploadForm.addEventListener('submit', (e)=>{
     e.preventDefault();
+    console.log("here")
     const { name, path } = audioFile.files[0];
     let newSong = new Song(name, path);
 
     playlist.push(newSong);
-    
     fileUploadForm.reset();
     showPlaylist();
 })
@@ -179,18 +196,12 @@ play.addEventListener('click', () => {
         isPlaying = true; 
             if(audioElement.src) {
                 console.log(analyser);
-                draw();
+                
                 playTrack();
             } else {
                 audioElement.src = playlist[currentIndex].source;
                 track = audioContext.createMediaElementSource(audioElement);
-                analyser = audioContext.createAnalyser();
-                track.connect(analyser);
-                analyser.fftSize = 2048;
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-                draw();
-                // console.log(analyser.getByteFrequencyData(dataArray));
+                
                 playTrack();
             }
     }

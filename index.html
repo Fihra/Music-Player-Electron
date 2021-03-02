@@ -11,12 +11,18 @@
             <div>
                 <div id="now-playing-container" class="now-playing-container">
                     <h2>Now Playing: <span id="now-playing" class="now-playing"></span></h2>
-                    <audio id="song"></audio>
+                    <audio id="song" preload="metadata"></audio>
                 </div>
                 <div id="audio-spectrum-container">
                     <canvas id="audio-spectrum">
 
                     </canvas>
+                </div>
+                <div class="buffered">
+                    <span id="buffered-amount"></span>
+                </div>
+                <div class="progress">
+                    <span id="progress-amount"></span>
                 </div>
                 <div class="ui-controls">
                     <button id="previous-btn" class="ui-button">Previous</button>
@@ -32,7 +38,6 @@
                     <form id="file-upload">
                         <label class="custom-file-upload">+ Browse File
                             <input type="file" accept="audio/*" id="audio-file" name="file"></input>
-                            
                         </label>
                         <button type="submit">Add to Playlist</button>
                     </form>

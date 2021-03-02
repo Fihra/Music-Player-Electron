@@ -31,6 +31,10 @@ span {
     animation: fadein 1s;
 }
 
+#now-playing {
+    display: inline-block;
+}
+
 /* .now-playing {
     color:rgb(205, 255, 230);
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -43,6 +47,39 @@ span {
     align-items: center;
     margin: auto;
     padding-bottom: 10px;
+}
+
+#audio-spectrum {
+    background: transparent;
+}
+
+/*Time Seek Player Bar*/
+.buffered{
+    height: 20px;
+    position:relative;
+    background: #555;
+    width: 300px;
+}
+
+#buffered-amount {
+    display: block;
+    height: 100%;
+    background-color: #777;
+    width: 0;
+}
+
+.progress {
+    margin-top: -20px;
+    height: 20px;
+    position: relative;
+    width: 300px;
+}
+
+#progress-amount {
+    display: block;
+    height: 100%;
+    background-color: #595;
+    width: 0;
 }
 
 .playlist-container h2 {
@@ -77,6 +114,11 @@ input[type="file"]{
     width: auto;
     padding-bottom: 10px;
 }
+
+.now-playing-container h2 {
+    display: inline-block;
+}
+
 .ui-controls {
     text-align: center;
     align-items: center;
