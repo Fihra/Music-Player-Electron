@@ -7,31 +7,35 @@
     </head>
     <body>
         <div>
-            <h1 class="title">Music Player</h1>         
-            <div>
-                <div id="now-playing-container" class="now-playing-container">
-                    <h2>Now Playing: <span id="now-playing" class="now-playing"></span></h2>
+            <!-- <h1 class="title">Music Player</h1>          -->
+            <main>
+                <section id="now-playing-container" class="now-playing-container">
+                    <h1>Now Playing: <span id="now-playing" class="now-playing"></span></h1>
                     <audio id="song" preload="metadata"></audio>
-                </div>
+                </section>
                 <div id="audio-spectrum-container">
                     <canvas id="audio-spectrum">
 
                     </canvas>
                 </div>
-                <div class="buffered">
-                    <span id="buffered-amount"></span>
-                </div>
-                <div class="progress">
-                    <span id="progress-amount"></span>
-                </div>
-                <div class="ui-controls">
+                <section>
+                    <h2 id="time-length"><span id="current-time">00:00</span> / <span id="total-time">00:00</span></h2>
+                    <div class="buffered">
+                        
+                        <span id="buffered-amount"></span>
+                    </div>
+                    <div class="progress">
+                        <span id="progress-amount"></span>
+                    </div>
+                </section>
+                <section class="ui-controls">
                     <button id="previous-btn" class="ui-button">Previous</button>
                     <button id="play-btn" class="ui-button">Play</button>
                     <button id="stop-btn" class="ui-button">Stop</button>
                     <button id="next-btn" class="ui-button">Next</button>
-                </div>
+                </section>
                 
-            </div>
+            </main>
             <div id="playlist-container">
                 <h2>Playlist</h2>
                 <div class="file-upload-container">

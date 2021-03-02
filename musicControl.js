@@ -16,6 +16,10 @@ const play = document.getElementById("play-btn");
 const stop = document.getElementById("stop-btn");
 const next = document.getElementById("next-btn");
 
+const songLength = document.getElementById("time-length");
+const currentTime = document.getElementById("current-time");
+const totalTime = document.getElementById("total-time");
+
 const fileContainer = document.getElementById("fileContainer");
 const audioElement = document.querySelector("audio");
 
@@ -42,13 +46,16 @@ let samples = audioContext.sampleRate * 2.0;
 let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate);
 
 /*TODO Features
-=== Cursor on NOW PLAYING
 === Time Length of NOW PLAYING
+=== Cursor on NOW PLAYING
+
+=== NEXT BUTTON
+=== PREVIOUS BUTTON
 === SHUFFLE
 === REPEAT
-=== AUDIO SPECTRUM/VISUALIZER OF SONG
-=== SCROLL AROUND AUDIO SPECTRUM
 
+=== EQ Customization
+=== Add Effects to Playback
 === Control Playback Speed
 === Loop Certain Sections (*Start Section *End Section)
 ===
@@ -73,6 +80,18 @@ const showCurrentSongPlaying = () => {
     nowPlayingContainer.appendChild(nowPlayingSong);
 }
 
+const showCurrentTime = () => {
+    let currentSeconds = Math.floor(audioElement.currentTime);
+    currentTime.textContent = currentSeconds;
+}
+
+const showFullTime = (fullTrackTime) => {
+    let minutes = Math.floor(fullTrackTime / 60);
+    let remainingSeconds = Math.floor(fullTrackTime - minutes * 60);
+    totalTime.textContent = `${minutes}:${remainingSeconds}`;
+
+}
+
 const playTrack = () => {
     analyser = audioContext.createAnalyser();
     track.connect(analyser);
@@ -80,23 +99,30 @@ const playTrack = () => {
     bufferLength = analyser.fftSize;
     dataArray = new Float32Array(bufferLength);
 
-    let currentTrackTime;
-    console.log(track.context.currentTime);
+    let fullTrackTime;
 
     audioElement.addEventListener("loadedmetadata", () => {
-        currentTrackTime = audioElement.duration;
-        console.log(currentTrackTime);
+        fullTrackTime = audioElement.duration;
+        showFullTime(fullTrackTime);
     })
 
-    // audioElement.addEventListener('progress', () => {
-    //     if(currentTrackTime > 0){
-    //         for(let i = 0; i < audioElement.buffered.length; i++){
-    //             if(audioElement.buffered.start(audioElement.buffered.length - 1 - i) < audioElement.currentTime){
+    audioElement.addEventListener('progress', () => {
+        if(fullTrackTime > 0){
+            for(let i = 0; i < audioElement.buffered.length; i++){
+                if(audioElement.buffered.start(audioElement.buffered.length - 1 - i) < audioElement.currentTime){
+                    bufferedAmount.style.width = audioElement.buffered.end(audioElement.buffered.length - 1 - i) /fullTrackTime * 100 + "%";
+                    break;
+                }
+            }
+        }
+    })
 
-    //             }
-    //         }
-    //     }
-    // })
+    audioElement.addEventListener('timeupdate', () => {
+        showCurrentTime();
+        if(fullTrackTime > 0){
+            progressAmount.style.width = ((audioElement.currentTime / fullTrackTime) * 100) + "%";
+        }
+    })
 
     track.connect(audioContext.destination);
 
