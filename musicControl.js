@@ -81,8 +81,9 @@ const showCurrentSongPlaying = () => {
 }
 
 const showCurrentTime = () => {
-    let currentSeconds = Math.floor(audioElement.currentTime);
-    currentTime.textContent = currentSeconds;
+    let currentMinutes = Math.floor(audioElement.currentTime / 60);
+    let currentSeconds = Math.floor(audioElement.currentTime) - (currentMinutes * 60);
+    currentTime.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, "0")}`;
 }
 
 const showFullTime = (fullTrackTime) => {
