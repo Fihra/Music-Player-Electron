@@ -16,6 +16,7 @@ const newApp = () => {
     );
 
     let aboutWindow = null;
+    let mixerWindow = null;
 
     const openAboutWindow = (e) => {
         if(aboutWindow){
@@ -40,6 +41,32 @@ const newApp = () => {
                 slashes: true
             })
         )
+        // aboutWindow.loadURL("file://./about.html");   
+    }
+
+    const openMixerWindow = (e) => {
+        if(mixerWindow){
+            mixerWindow.focus();
+            mixerWindow.show();
+            return;
+        }
+
+        mixerWindow = new BrowserWindow({
+            width: 750,
+            height: 250,
+        })
+
+        mixerWindow.on("close", (e) => {
+            mixerWindow.hide();
+            e.preventDefault();
+        })
+
+        mixerWindow.loadURL(
+            url.format({
+                pathname: "mixer.html",
+                slashes: true
+            })
+        )
     }
 
     const menuTemplate = [
@@ -51,10 +78,14 @@ const newApp = () => {
                     click: () => { openAboutWindow()}
                 },
                 {
+                    label: "Mixer",
+                    click: () => { openMixerWindow()}
+                },
+                {
                     type: "separator"
                 },
                 {
-                    label: "Leave this depressing world as we succumb into the dark abyss",
+                    label: "Leave this depressing world as we succumb into the dark abyss from our own demise",
                     click: () => { app.quit()}
                 }
             ]
