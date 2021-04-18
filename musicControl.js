@@ -29,7 +29,7 @@ const progressAmount = document.getElementById("progress-amount");
 const audioCanvas = document.getElementById("audio-spectrum");
 const canvasContext = audioCanvas.getContext('2d');
 
-const playlist = [];
+const playlist = [];    
 
 let currentSong = new Audio();
 let currentIndex = 0;
@@ -69,14 +69,13 @@ const resetPlaylist = () => {
 
 const changeSongSource = (num) => {
     audioElement.src = playlist[num].source;
-    track.connect(audioContext.destination);
+    if(track === undefined) track = audioContext.createMediaElementSource(audioElement);
     showCurrentSongPlaying();
     playTrack();
 }
 
 const showCurrentSongPlaying = () => {
     nowPlayingSong.textContent = playlist[currentIndex].name;
-    console.log(playlist);
     nowPlayingContainer.appendChild(nowPlayingSong);
 }
 
@@ -90,7 +89,6 @@ const showFullTime = (fullTrackTime) => {
     let minutes = Math.floor(fullTrackTime / 60);
     let remainingSeconds = Math.floor(fullTrackTime - minutes * 60);
     totalTime.textContent = `${minutes}:${remainingSeconds}`;
-
 }
 
 const playTrack = () => {
@@ -126,7 +124,6 @@ const playTrack = () => {
     })
 
     track.connect(audioContext.destination);
-
     draw();
     audioElement.play();
 }
@@ -137,14 +134,12 @@ const showPlaylist = () => {
     for(let i=0; i < playlist.length; i++){
         const songContainer = document.createElement("div");
         const songElement = document.createElement("li");
+        // console.log(playlist[i].name.split("."));
         songElement.textContent = playlist[i].name;
  
         songContainer.addEventListener("click" , () =>{
-            console.log(songElement.textContent);
             currentIndex = i;
-            // audioElement.src = playlist[i].source;
-            changeSongSource(i);
-            
+            changeSongSource(i); 
         })
 
         songContainer.appendChild(songElement);
@@ -192,10 +187,8 @@ const draw = () => {
 
 fileUploadForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    console.log("here")
     const { name, path } = audioFile.files[0];
     let newSong = new Song(name, path);
-
     playlist.push(newSong);
     fileUploadForm.reset();
     showPlaylist();
@@ -216,7 +209,6 @@ play.addEventListener('click', () => {
     showCurrentSongPlaying();
 
     let seconds = 0;
-
     if(isPlaying){
         audioElement.pause();
     } else {
@@ -244,6 +236,7 @@ play.addEventListener('click', () => {
         // console.log(audioElement.currentTime);
         // console.log(audioElement.buffered)
         // console.log(`${seconds} second(s) has passed`);
+        // console.log(currentClock);
         seconds++;        
     }
 
@@ -262,8 +255,5 @@ next.addEventListener('click', () => {
     if(currentIndex === playlist.length) return;
     currentIndex++;
     console.log(isPlaying);
-    if(isPlaying){
-        changeSongSource(currentIndex);
-    }
-
+    if(isPlaying) changeSongSource(currentIndex);
 })
