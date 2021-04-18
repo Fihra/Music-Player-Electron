@@ -49,8 +49,6 @@ let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate)
 === Time Length of NOW PLAYING
 === Cursor on NOW PLAYING
 
-=== NEXT BUTTON
-=== PREVIOUS BUTTON
 === SHUFFLE
 === REPEAT
 
@@ -195,13 +193,12 @@ fileUploadForm.addEventListener('submit', (e)=>{
 })
 
 previous.addEventListener('click', () => {
-    console.log("previous track")
-    if(currentIndex === playlist.length) {
+    if(currentIndex === 0) {
         currentIndex = playlist.length -1;
     } else {
         currentIndex--;
     }
-    
+    if(isPlaying) changeSongSource(currentIndex);
 })
 
 play.addEventListener('click', () => {
@@ -250,10 +247,10 @@ stop.addEventListener('click', () => {
 })
 
 next.addEventListener('click', () => {
-    console.log("next track")
-    
-    if(currentIndex === playlist.length) return;
-    currentIndex++;
-    console.log(isPlaying);
+    if(currentIndex === playlist.length - 1) {
+        currentIndex = 0;
+    } else {
+        currentIndex++;
+    }
     if(isPlaying) changeSongSource(currentIndex);
 })
