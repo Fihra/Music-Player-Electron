@@ -183,8 +183,19 @@ const draw = () => {
 
 }
 
-fileUploadForm.addEventListener('submit', (e)=>{
+// fileUploadForm.addEventListener('submit', (e)=>{
+//     e.preventDefault();
+//     console.log("SHOW HOSW")
+//     const { name, path } = audioFile.files[0];
+//     let newSong = new Song(name, path);
+//     playlist.push(newSong);
+//     fileUploadForm.reset();
+//     showPlaylist();
+// })
+
+fileUploadForm.addEventListener('change', (e) => {
     e.preventDefault();
+    console.log("CHANGE ME");
     const { name, path } = audioFile.files[0];
     let newSong = new Song(name, path);
     playlist.push(newSong);
