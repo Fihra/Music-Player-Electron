@@ -98,10 +98,24 @@ span {
     position: relative;
     display: flex;
     /* left: 100px;
-    top: 300px; */
-    /* margin: auto; */
-    /* border: 5px solid black; */
-    /* text-align: center; */
+    top: 300px;
+    margin: auto;
+    border: 5px solid black;
+    text-align: center; */
+}
+
+.playlist-title {
+    display: inline-flex;
+    width: 500px;
+    height: 40px;
+}
+
+#audio-file {
+    width: 100px;
+}
+
+#file-upload {
+    padding: 10px;
 }
 
 input[type="file"]{

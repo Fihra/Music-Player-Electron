@@ -33,21 +33,20 @@
                     <button id="play-btn" class="ui-button">Play</button>
                     <button id="stop-btn" class="ui-button">Stop</button>
                     <button id="next-btn" class="ui-button">Next</button>
+                    <button id="shuffle-btn" class="ui-button">Shuffle</button>
+                    <button id="repeat-btn" class="ui-button">Repeat</button>
                 </section>
                 
             </main>
+            <div class="playlist-title">
+            <h2>Playlist</h2>
+                <form id="file-upload">
+                    <label class="custom-file-upload">+ Browse File
+                        <input type="file" accept="audio/*" id="audio-file" name="file"></input>
+                    </label>
+                </form>
+            </div>
             <div id="playlist-container">
-                <h2>Playlist</h2>
-                <div class="file-upload-container">
-                    <form id="file-upload">
-                        <label class="custom-file-upload">+ Browse File
-                            <input type="file" accept="audio/*" id="audio-file" name="file"  ></input>
-                        </label>
-                        <!-- <button type="submit">Add to Playlist</button> -->
-                    </form>
-                </div>
-
-                
                 <ol id="playlist-items">
                 </ol>
             </div>

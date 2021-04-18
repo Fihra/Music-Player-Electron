@@ -15,6 +15,8 @@ const previous = document.getElementById("previous-btn");
 const play = document.getElementById("play-btn");
 const stop = document.getElementById("stop-btn");
 const next = document.getElementById("next-btn");
+const shuffle = document.getElementById("shuffle-btn");
+const repeat = document.getElementById("repeat-btn");
 
 const songLength = document.getElementById("time-length");
 const currentTime = document.getElementById("current-time");
@@ -31,7 +33,6 @@ const canvasContext = audioCanvas.getContext('2d');
 
 const playlist = [];    
 
-let currentSong = new Audio();
 let currentIndex = 0;
 let isPlaying = false;
 
@@ -131,14 +132,15 @@ const showPlaylist = () => {
     resetPlaylist();
     for(let i=0; i < playlist.length; i++){
         const songContainer = document.createElement("div");
-        const songElement = document.createElement("li");
+        let songElement = document.createElement("li");
         // console.log(playlist[i].name.split("."));
         songElement.textContent = playlist[i].name;
- 
         songContainer.addEventListener("click" , () =>{
             currentIndex = i;
             changeSongSource(i); 
         })
+
+        console.log(playlistItems);
 
         songContainer.appendChild(songElement);
         playlistItems.appendChild(songContainer);
@@ -232,6 +234,7 @@ play.addEventListener('click', () => {
                 playTrack();
             }
     }
+    console.log(playlist[currentIndex]);
 
     // audioElement.addEventListener('timeupdate', (e) => {
     //     console.log(`${seconds} second(s) has passed`);
@@ -251,7 +254,6 @@ play.addEventListener('click', () => {
 })
 
 stop.addEventListener('click', () => {
-    console.log("stop track")
     isPlaying = false;
     track.disconnect();
     audioElement.pause();
@@ -264,4 +266,29 @@ next.addEventListener('click', () => {
         currentIndex++;
     }
     if(isPlaying) changeSongSource(currentIndex);
+})
+
+shuffle.addEventListener('click', () => {
+    console.log("Shuffle");
+    if(playlist.length === 0) return;
+    const shuffleNums = [];
+    let randNum;
+    let num;
+    if(shuffleNums.length === 0){
+        randNum = Math.floor(Math.random() * playlist.length);
+        shuffleNums.push(randNum);
+    } else {
+        let newNum;
+        do{
+            newNum = Math.floor(Math.random() * playlist.length);
+        }while(shuffleNums.includes(newNum));
+        shuffleNums.push(newNum);
+    }
+    num = randNum;
+    shuffleNums.push(num);
+    console.log(shuffleNums);
+})
+
+repeat.addEventListener('click', () => {
+    console.log("Repeat");
 })
