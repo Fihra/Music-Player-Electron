@@ -39,6 +39,7 @@ let isPlaying = false;
 
 let audioContext = new AudioContext();
 let track;
+let isLooping = false;
 let analyser;
 let bufferLength;
 let dataArray;
@@ -51,7 +52,6 @@ let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate)
 === Time Length of NOW PLAYING
 === Cursor on NOW PLAYING
 
-=== SHUFFLE
 === REPEAT
 
 === EQ Customization
@@ -79,9 +79,17 @@ const showCurrentSongPlaying = () => {
     nowPlayingContainer.appendChild(nowPlayingSong);
 }
 
+const getCurrentTimeInMinutes = () => {
+    return Math.floor(audioElement.currentTime / 60);
+}
+
+const getCurrentTimeInSeconds = (currentMinutes) => {
+    return Math.floor(audioElement.currentTime) - (currentMinutes * 60);
+}
+
 const showCurrentTime = () => {
-    let currentMinutes = Math.floor(audioElement.currentTime / 60);
-    let currentSeconds = Math.floor(audioElement.currentTime) - (currentMinutes * 60);
+    let currentMinutes = getCurrentTimeInMinutes();
+    let currentSeconds = getCurrentTimeInSeconds(currentMinutes);
     currentTime.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, "0")}`;
 }
 
@@ -198,7 +206,6 @@ const draw = () => {
 
 fileUploadForm.addEventListener('change', (e) => {
     e.preventDefault();
-    console.log("CHANGE ME");
     const { name, path } = audioFile.files[0];
     let newSong = new Song(name, path);
     playlist.push(newSong);
@@ -218,41 +225,29 @@ previous.addEventListener('click', () => {
 play.addEventListener('click', () => {
     console.log("play track")
     showCurrentSongPlaying();
-
     let seconds = 0;
     if(isPlaying){
         audioElement.pause();
     } else {
         isPlaying = true; 
-            if(audioElement.src) {
-                console.log(analyser);
-                
+            if(audioElement.src) {            
                 playTrack();
             } else {
                 audioElement.src = playlist[currentIndex].source;
-                track = audioContext.createMediaElementSource(audioElement);
-                
+                track = audioContext.createMediaElementSource(audioElement);          
                 playTrack();
             }
     }
-    console.log(playlist[currentIndex]);
-
-    // audioElement.addEventListener('timeupdate', (e) => {
-    //     console.log(`${seconds} second(s) has passed`);
-    //     seconds++;
-    // })
-
-    audioElement.ontimeupdate = (e) => {
-        let currentClock = new Date().getTime();
-        // console.log(Math.floor(currentClock/ 1000));
-        // console.log(audioElement.currentTime);
-        // console.log(audioElement.buffered)
-        // console.log(`${seconds} second(s) has passed`);
-        // console.log(currentClock);
-        seconds++;        
-    }
-
 })
+
+audioElement.ontimeupdate = (e) => {
+    // console.log(Math.floor(currentClock/ 1000));
+    // console.log(audioElement.currentTime);
+    // console.log(audioElement.buffered)
+    // console.log(`${seconds} second(s) has passed`);
+    // console.log(currentClock);
+    // seconds++;        
+}
 
 stop.addEventListener('click', () => {
     isPlaying = false;
@@ -295,4 +290,16 @@ shuffle.addEventListener('click', () => {
 
 repeat.addEventListener('click', () => {
     console.log("Repeat");
+    isLooping = !isLooping;
+
+    console.log(isLooping);
+    isLooping ? audioElement.loop = true : audioElement.loop = false;
+    // audioElement.addEventListener("timeupdate", () => {
+    //     let currentClock = new Date().getTime();
+    //     if(audioElement.currentTime >= audioElement.duration){
+    //         audioEleme
+    //     }
+    //     console.log("Current Time: ", audioElement.currentTime);
+    //     console.log("Duration: ", audioElement.duration);
+    // })
 })
