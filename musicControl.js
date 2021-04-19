@@ -32,6 +32,7 @@ const audioCanvas = document.getElementById("audio-spectrum");
 const canvasContext = audioCanvas.getContext('2d');
 
 const playlist = [];    
+const shuffleNums = [];
 
 let currentIndex = 0;
 let isPlaying = false;
@@ -271,7 +272,9 @@ next.addEventListener('click', () => {
 shuffle.addEventListener('click', () => {
     console.log("Shuffle");
     if(playlist.length === 0) return;
-    const shuffleNums = [];
+    
+    if(shuffleNums.length === playlist.length) shuffleNums.length = 0;
+
     let randNum;
     let num;
     if(shuffleNums.length === 0){
@@ -284,8 +287,8 @@ shuffle.addEventListener('click', () => {
         }while(shuffleNums.includes(newNum));
         shuffleNums.push(newNum);
     }
-    num = randNum;
-    shuffleNums.push(num);
+    // num = randNum;
+    // shuffleNums.push(num);
     console.log(shuffleNums);
 })
 
