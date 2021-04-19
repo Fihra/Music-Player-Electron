@@ -276,19 +276,20 @@ shuffle.addEventListener('click', () => {
     if(shuffleNums.length === playlist.length) shuffleNums.length = 0;
 
     let randNum;
-    let num;
     if(shuffleNums.length === 0){
         randNum = Math.floor(Math.random() * playlist.length);
         shuffleNums.push(randNum);
+        currentIndex = randNum;   
     } else {
         let newNum;
         do{
             newNum = Math.floor(Math.random() * playlist.length);
         }while(shuffleNums.includes(newNum));
         shuffleNums.push(newNum);
+        currentIndex = newNum;
     }
-    // num = randNum;
-    // shuffleNums.push(num);
+    changeSongSource(currentIndex);
+    
     console.log(shuffleNums);
 })
 
