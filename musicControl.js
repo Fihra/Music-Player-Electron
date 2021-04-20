@@ -1,6 +1,7 @@
 // const {electron, ipcRenderer } = require("electron");
 // const fs = require("fs");
 const Song = require("./Song.js").Song;
+const testing = require('./mixing.js');
 
 const audioFile = document.getElementById("audio-file")
 const fileUploadForm = document.getElementById("file-upload");
@@ -48,6 +49,7 @@ let samples = audioContext.sampleRate * 2.0;
 
 let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate);
 
+console.log(testing);
 /*TODO Features
 === Time Length of NOW PLAYING
 === Cursor on NOW PLAYING
@@ -284,15 +286,11 @@ shuffle.addEventListener('click', () => {
         currentIndex = newNum;
     }
     changeSongSource(currentIndex);
-    
-    console.log(shuffleNums);
 })
 
 repeat.addEventListener('click', () => {
     console.log("Repeat");
     isLooping = !isLooping;
-
-    console.log(isLooping);
     isLooping ? audioElement.loop = true : audioElement.loop = false;
     // audioElement.addEventListener("timeupdate", () => {
     //     let currentClock = new Date().getTime();

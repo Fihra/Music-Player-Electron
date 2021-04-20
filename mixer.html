@@ -4,19 +4,29 @@
         <meta charset="UTF-8"/>
         <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
         <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="mixing.js"  defer></script>
     </head>
     <body>
         <main>
             <h1>Mixer</h1>
-            
-            <input type="range"/>
-            <input type="range"/>
-            <input type="range"/>
-            <input type="range"/>
-            <input type="range"/>
-
-
-
+            <div class="mix-container">
+                <div class="mix-slider">
+                    <label class="mix-label">Low Pass Filter</label>
+                    <input id="low-pass" type="range" min="0" max="1000" value="500"/>
+                </div>
+                <div class="mix-slider">
+                    <label class="mix-label">Mid Pass Filter</label>
+                    <input id="mid-pass" type="range" min="0" max="1000" value="500"/>
+                </div>
+                <div class="mix-slider">
+                    <label class="mix-label">High Pass Filter</label>
+                    <input id="high-pass" type="range" min="0" max="1000" value="500"/>
+                </div>
+                <div class="mix-slider">
+                    <label class="mix-label">Volume</label>
+                    <input id="volume" type="range" min="-60" max="60" value="0"/>
+                </div>
+            </div>
         </main>
     </body>
 </html>

@@ -53,7 +53,7 @@ const newApp = () => {
 
         mixerWindow = new BrowserWindow({
             width: 750,
-            height: 250,
+            height: 300,
         })
 
         mixerWindow.on("close", (e) => {
