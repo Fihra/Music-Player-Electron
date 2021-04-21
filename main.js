@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 const url = require("url");
 
 const newApp = () => {
@@ -8,12 +8,6 @@ const newApp = () => {
         }
     });
 
-    // win.loadURL(
-    //     url.format({
-    //         pathname: "index.html",
-    //         slashes: true
-    //     })
-    // );
     win.loadURL(`file://${__dirname}/index.html`);
     win.on('closed', () => app.quit());
 
@@ -50,6 +44,9 @@ const newApp = () => {
         mixerWindow = new BrowserWindow({
             width: 750,
             height: 300,
+            webPreferences: {
+                nodeIntegration: true
+            }
         })
 
         mixerWindow.on("close", (e) => {
@@ -59,6 +56,10 @@ const newApp = () => {
 
         mixerWindow.loadURL(`file://${__dirname}/mixer.html`);
     }
+
+    ipcMain.on('lowpass:change', (event, lowpass) => {
+        win.webContents.send('lowpass:change', lowpass);
+    });
 
     const menuTemplate = [
         {

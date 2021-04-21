@@ -1,7 +1,7 @@
-// const {electron, ipcRenderer } = require("electron");
+const electron = require("electron");
+const { ipcRenderer } = electron;
 // const fs = require("fs");
 const Song = require("./Song.js").Song;
-const testing = require('./mixing.js');
 
 const audioFile = document.getElementById("audio-file")
 const fileUploadForm = document.getElementById("file-upload");
@@ -45,11 +45,29 @@ let analyser;
 let bufferLength;
 let dataArray;
 
+let lowpassNode = audioContext.createBiquadFilter();
+let highpassNode = audioContext.createBiquadFilter();
+let bandpassNode = audioContext.createBiquadFilter();
+let volumeNode = audioContext.createGain();
+
+let lowpassVal = 100;
+
 let samples = audioContext.sampleRate * 2.0;
 
 let audioBuffer = audioContext.createBuffer(2, samples, audioContext.sampleRate);
 
-console.log(testing);
+ipcRenderer.on('lowpass:change', (event, lowpass) => {
+    console.log("musicControl: ", lowpass);
+    lowpassVal = lowpass;
+
+    audioContext.onstatechange = () => {
+        console.log("Here");
+
+        lowpassNode.frequency.linearRampToValueAtTime(lowpassVal, 5);
+        lowpassNode.frequency.setValueAtTime(lowpassVal, 3.0);
+    }
+})
+
 /*TODO Features
 === Time Length of NOW PLAYING
 === Cursor on NOW PLAYING
@@ -103,6 +121,20 @@ const showFullTime = (fullTrackTime) => {
 
 const playTrack = () => {
     analyser = audioContext.createAnalyser();
+
+    lowpassNode.type = "lowpass";
+    // track.addEventListener("change", () => {
+    //     lowpassNode.frequency.linearRampToValueAtTime(lowpassVal, 5);
+    //     lowpassNode.frequency.setValueAtTime(lowpassVal, 3.0);
+    // })
+
+    lowpassNode.frequency.linearRampToValueAtTime(lowpassVal, 5);
+    lowpassNode.frequency.setValueAtTime(lowpassVal, 3.0);
+    // lowpassNode.gain.value = 1;
+
+    track.connect(lowpassNode);
+    lowpassNode.connect(analyser);
+
     track.connect(analyser);
     analyser.fftSize = 1024;
     bufferLength = analyser.fftSize;
@@ -133,7 +165,7 @@ const playTrack = () => {
         }
     })
 
-    track.connect(audioContext.destination);
+    lowpassNode.connect(audioContext.destination);
     draw();
     audioElement.play();
 }
@@ -151,7 +183,7 @@ const showPlaylist = () => {
             changeSongSource(i); 
         })
 
-        console.log(playlistItems);
+        // console.log(playlistItems);
 
         songContainer.appendChild(songElement);
         playlistItems.appendChild(songContainer);
