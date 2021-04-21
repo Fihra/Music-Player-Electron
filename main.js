@@ -8,12 +8,14 @@ const newApp = () => {
         }
     });
 
-    win.loadURL(
-        url.format({
-            pathname: "index.html",
-            slashes: true
-        })
-    );
+    // win.loadURL(
+    //     url.format({
+    //         pathname: "index.html",
+    //         slashes: true
+    //     })
+    // );
+    win.loadURL(`file://${__dirname}/index.html`);
+    win.on('closed', () => app.quit());
 
     let aboutWindow = null;
     let mixerWindow = null;
@@ -35,13 +37,7 @@ const newApp = () => {
             e.preventDefault();
         })
 
-        aboutWindow.loadURL(
-            url.format({
-                pathname: "about.html",
-                slashes: true
-            })
-        )
-        // aboutWindow.loadURL("file://./about.html");   
+        aboutWindow.loadURL(`file://${__dirname}/about.html`);  
     }
 
     const openMixerWindow = (e) => {
@@ -61,12 +57,7 @@ const newApp = () => {
             e.preventDefault();
         })
 
-        mixerWindow.loadURL(
-            url.format({
-                pathname: "mixer.html",
-                slashes: true
-            })
-        )
+        mixerWindow.loadURL(`file://${__dirname}/mixer.html`);
     }
 
     const menuTemplate = [
